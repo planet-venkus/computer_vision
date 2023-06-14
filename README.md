@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # Setup guide: TF pool
 These steps will set up the environment when you work on the pool computer at the technical faculty.
 ## 0. Log in to the pool:
@@ -51,3 +52,6 @@ In a terminal, from a folder of your choice, run:
 
     ```import torch, torchvision```
     
+=======
+# computer_vision
+>>>>>>> cacaf92e1441493dec847d3d55805b946c40ab11
