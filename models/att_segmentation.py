@@ -42,10 +42,14 @@ class AttSegmentator(nn.Module):
         class_vec = self.class_encoder(v_class)
         # class_vec: [1, 512]
 
-        raise NotImplementedError("TODO: Implement the attention-based segmentation network")
+        # raise NotImplementedError("TODO: Implement the attention-based segmentation network")
         # Write the forward pass of the model.
         # Base the model on the segmentation model and add the attention layer.
         # Be aware of the dimentions.
+        shape = enc_feat.shape
+        enc_feat = enc_feat.permute(0, 2, 3, 1).contiguous().view(shape[0], -1, shape[1])
+        x_enc, attention = self.attention_enc(enc_feat, class_vec)
+        enc_feat = x_enc.view(shape)
 
         # ENCODER ATTENTION
 

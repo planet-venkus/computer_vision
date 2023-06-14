@@ -50,11 +50,12 @@ class AdditiveAttention(nn.Module):
 class ScaleDotProdAttention(nn.Module):
     def __init__(self, encoder_dim, att_size=512):
         super(ScaleDotProdAttention, self).__init__()
-        raise NotImplementedError("TODO: Implement attention layer")
+        # raise NotImplementedError("TODO: Implement attention layer")
         # Matrices can be seen as linear layers without bias
-        # self.W_Q = 
-        # self.W_K = 
-        # self.W_V = 
+        self.W_Q = nn.Linear(encoder_dim, att_size)
+        self.W_K = nn.Linear(encoder_dim, att_size)
+        self.W_V = nn.Linear(encoder_dim, encoder_dim)
+        self.encoder_dim = encoder_dim
         self.softmax = nn.Softmax(1)
         self.scale_score = 1. / float(att_size)** 0.5
 
@@ -62,19 +63,19 @@ class ScaleDotProdAttention(nn.Module):
         # encoder_output ------ torch.Size([Bs, hxw, encoder_dim])
         # cls_vector ------ torch.Size([1, 512])
 
-        raise NotImplementedError("TODO: Calculate query, key and vector")
-        # query = 
-        # key = 
-        # value = 
+        # raise NotImplementedError("TODO: Calculate query, key and vector")
+        query = self.W_Q(cls_vector)
+        key = self.W_K(encoder_output)
+        value = self.W_V(encoder_output)
 
         # query ------ torch.Size([1, att_size])
         # key ------ torch.Size([Bs, hxw, att_size])
         # value ------ torch.Size([Bs, hxw, encoder_dim])
         
-        raise NotImplementedError("TODO: Calculate the dot product, \
-            multiply by the scale factor, apply softmax to get the attention")
-        # att = 
-        # att_scaled = 
+        # raise NotImplementedError("TODO: Calculate the dot product, \
+        #     multiply by the scale factor, apply softmax to get the attention")
+        att = torch.matmul(query.unsqueeze(1), torch.transpose(key, 1, 2))
+        att_scaled = att / torch.sqrt(self.encoder_dim)
         # att (mixed dot product) ------ torch.Size([Bs, hxw])
 
         alpha = self.softmax(att_scaled)
